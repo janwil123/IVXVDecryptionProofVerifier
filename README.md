@@ -22,7 +22,7 @@ In order to compile the application, write
 
 This will produce the `ProofChecker` binary. 
 
-In order for the application to run. it needs access to two data files:
+In order for the application to run, it needs access to two data files:
 
 - public key used to encrypt the votes, and
 - the zero-knowledge proofs exported by the tallying application.
