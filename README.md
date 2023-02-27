@@ -16,7 +16,12 @@ On Ubuntu 22.04.1 LTS, this will install Go version 1.18 which is recent enough 
 
 ## Compiling and running the verifier
 
-In order to compile the application, write
+First, download the source code and examine it:
+
+    git clone https://github.com/janwil123/IVXVDecryptionProofVerifier
+    cd IVXVDecryptionProofVerifier/
+
+In order to compile the application, write:
 
     go build ProofChecker.go
 
