@@ -201,6 +201,8 @@ func main() {
 	var wg sync.WaitGroup
 	wg.Add(len(proofs))
 
+	var mu sync.Mutex
+
 	// Check the proofs
 
 	for i := 0; i < len(proofs); i++ {
@@ -314,11 +316,13 @@ func main() {
 
 			// Verify that u^s = a ∗ (v/m)^k mod(p) and g^s = b ∗ h^k mod(p)
 
+			mu.Lock() // We need to lock the counters due to multi-threading
 			if (us.Cmp(r) == 0) && (gs.Cmp(t) == 0) {
 				passCount += 1
 			} else {
 				failCount += 1
 			}
+			mu.Unlock()
 		}(i)
 	}
 
