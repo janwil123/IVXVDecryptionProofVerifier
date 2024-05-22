@@ -9,7 +9,6 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"math/big"
 	"os"
 	"sync"
@@ -94,7 +93,7 @@ func main() {
 
 	// Load the configuration
 
-	content, err := ioutil.ReadFile("./config.json")
+	content, err := os.ReadFile("./config.json")
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -172,7 +171,7 @@ func main() {
 
 	// Read proofs from the JSON file
 
-	proofFile, err := ioutil.ReadFile(prooffilename)
+	proofFile, err := os.ReadFile(prooffilename)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -202,6 +201,11 @@ func main() {
 	wg.Add(len(proofs))
 
 	var mu sync.Mutex
+
+	// We will also count the results
+
+	var results map[string]int
+	results = make(map[string]int)
 
 	// Check the proofs
 
@@ -319,6 +323,7 @@ func main() {
 			mu.Lock() // We need to lock the counters due to multi-threading
 			if (us.Cmp(r) == 0) && (gs.Cmp(t) == 0) {
 				passCount += 1
+				results[string(message)] += 1
 			} else {
 				failCount += 1
 			}
@@ -329,5 +334,10 @@ func main() {
 	wg.Wait()
 
 	fmt.Printf("Successfully verified: %d.\n", passCount)
-	fmt.Printf("Failed verifications: %d.\n", failCount)
+	fmt.Printf("Failed verifications: %d.\n\n", failCount)
+
+	// Iterate over the keys of the result map to print out the vote counts.
+	for key, val := range results {
+		fmt.Printf("Candidate %s got %d votes.\n", key, val)
+	}
 }
