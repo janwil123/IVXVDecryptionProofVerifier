@@ -28,4 +28,9 @@ if sorted(proof_ciphertexts)==sorted(mixed_ciphertexts):
     print("The ciphertext sets match.")
 else:
     print("The ciphertext sets do not match.")
+    S1=set(proof_ciphertexts)
+    S2=set(mixed_ciphertexts)
+    print('Elements mixed, but not in the proof: ',S2-S1)
+    print('Elements in the proof, but not mixed: ',S1-S2)
+
     
